@@ -14,6 +14,7 @@ ARG GID=1000
 
 RUN groupadd -g $GID $USER && \
     useradd -r -m -u $UID -g $GID -s /bin/bash -G sudo $USER && \
+    usermod -a -G docker $USER && \
     echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Switch to the non-root user
