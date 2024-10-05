@@ -24,6 +24,15 @@ USER $USER
 WORKDIR /home/$USER
 
 
+# Copy config and scripts
+COPY ./config /config
+COPY ./scripts/* .
+
+# Set ENV
+ENV CUSTOM_TAG="1.0.0"
+ENV CUSTOM_IMAGE=""
+ENV DB_PASSWORD=""
+ENV PROJECT_NAME=""
 
 # Entry point
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "update.sh"]
