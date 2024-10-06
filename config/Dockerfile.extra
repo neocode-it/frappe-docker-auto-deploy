@@ -1,0 +1,6 @@
+# Those docker build steps will be executed on build using root user
+# Be carful and test your extension before production use!
+
+
+# Example:
+# RUN apt-get install curl
