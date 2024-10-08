@@ -52,3 +52,28 @@ docker compose -f compose.yaml \
   -f overrides/compose.redis.yaml \
   -f overrides/compose.noproxy.yaml \
   config > ./docker-compose.yaml
+
+##
+##  DEPLOYMENT
+##
+
+# Shutdown and delete current project
+docker compose -p "${PROJECT_NAME}" down
+
+# Clear anonymous volues (without prompt)
+docker volume prune -f
+
+# Create new docker container
+docker compose -p "${PROJECT_NAME}" -f docker-compose.yaml up -d --force-recreate
+
+# After update maintenance
+bench="docker compose -f docker-compose.yaml -p "${PROJECT_NAME}" exec backend bench "
+
+$bench --site all migrate
+$bench --site all clear-cache
+$bench --site all clear-website-cache
+
+# Clear builder layer cache in order to prevent excessive storage use
+docker builder prune -f
+
+exit 0
