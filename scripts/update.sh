@@ -35,3 +35,20 @@ cat /home/updater/config/Dockerfile.extra >> ./images/custom/Containerfile
 echo " " >> ./images/custom/Containerfile   # Add newline in case there is none in Docker.extra
 echo "USER frappe" >> ./images/custom/Containerfile
 
+##
+##  BUILD PROCESS
+##
+
+# Build docker image
+# Cache needs to be disabled, since docker doesn't know about possible app updates
+docker build \
+  --build-arg=APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
+  --tag="${CUSTOM_IMAGE}:${CUSTOM_TAG}" \
+  --file=images/custom/Containerfile --no-cache .
+
+# Create Docker compose file
+docker compose -f compose.yaml \
+  -f overrides/compose.mariadb.yaml \
+  -f overrides/compose.redis.yaml \
+  -f overrides/compose.noproxy.yaml \
+  config > ./docker-compose.yaml
