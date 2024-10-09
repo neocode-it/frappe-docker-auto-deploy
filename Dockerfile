@@ -28,10 +28,12 @@ ENV DB_PASSWORD=""
 ENV PROJECT_NAME=""
 ENV TZ="UTC"
 ENV SCHEDULED_TIME=""
+ENV APP_NAME=""
+ENV HTTP_PUBLISH_PORT="8080"
 
 # IMPORTANT: Specify all variables which will should be preserved 
 # after switching to user updater (done within entrypoint.sh)
-ENV PRESERVE_VARS="CUSTOM_TAG CUSTOM_IMAGE DB_PASSWORD PROJECT_NAME TZ SCHEDULED_TIME"
+ENV PRESERVE_VARS="DB_PASSWORD PROJECT_NAME TZ SCHEDULED_TIME APP_NAME HTTP_PUBLISH_PORT"
 
 # Entry point
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]

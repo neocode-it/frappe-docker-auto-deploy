@@ -24,6 +24,8 @@ elif [ ! -n "${DB_PASSWORD}" ]; then
 elif [ ! -n "${PROJECT_NAME}" ]; then
     echo "Error: Project name is unset. ENV PROJECT_NAME needs to be specified"
     exit 1
+elif [ "${HTTP_PUBLISH_PORT}" -lt 0 ]; then
+  echo "ERROR: HTTP_PUBLISH_PORT cannot be less than 0."
   exit 1
 fi
 
