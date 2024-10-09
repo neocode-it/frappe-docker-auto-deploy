@@ -24,6 +24,18 @@ elif [ ! -n "${DB_PASSWORD}" ]; then
 elif [ ! -n "${PROJECT_NAME}" ]; then
     echo "Error: Project name is unset. ENV PROJECT_NAME needs to be specified"
     exit 1
+  exit 1
+fi
+
+# Check if APP_NAME is set. If not, set default
+if [ -z "${APP_NAME}" ]; then
+    echo "APP_NAME unset.. using PROJECT_NAME as APP_NAME."
+    APP_NAME="${PROJECT_NAME}"
+fi
+# Check if app name is valid 
+if [[ ! "${APP_NAME}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+    echo "ERROR: APP_NAME contains invalid characters. Please check APP_NAME or PROJECT_NAME"
+    exit 1
 fi
 
 # Check if the docker socket does not exists within mount list

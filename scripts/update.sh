@@ -14,9 +14,9 @@
 
 # Prepare
 cd /home/updater/
-rm -rf ./frappe_docker
-git clone https://github.com/frappe/frappe_docker
-cd frappe_docker
+rm -rf ./app/
+git clone "https://github.com/frappe/frappe_docker" "./app/${APP_NAME}/"
+cd "./app/${APP_NAME}/"
 
 # Set default frappe env variables
 cp example.env .env
