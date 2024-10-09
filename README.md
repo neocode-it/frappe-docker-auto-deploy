@@ -11,3 +11,23 @@ Basic Auto-update/ deployment Docker container for custom Frappe docker builds. 
 5. Launch/Recreate project based on the new image
 6. Run bench migrate
 
+## How to use
+
+Spin up docker container
+
+``` 
+docker run -d \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v frappe_updater_config:/home/updater/config \
+-e DB_PASSWORD="admin" \
+-e PROJECT_NAME="frappe" \
+--name frappe-updater \
+neocodeit/frappe-docker-deploy:1.0.0
+```
+
+Optional Parameter:
+
+`-e APP_NAME` App name which will be used to create unique mount and network names. Defaults to `PROJECT_NAME`
+`-e TZ` Change default timezone for the scheduler. Defaults to `UTC`
+`-e SCHEDULED_TIME` Scheduled time (for updates). Read more about the scheduler below. Defaults to instant run without scheduler beeing set.
+`-e HTTP_PUBLISH_PORT`  Change http Port of frappe. Defaults to `8080`
