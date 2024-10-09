@@ -8,17 +8,12 @@
 
 DOCKER_SOCKET=/run/docker.sock  # Actual location of docker.sock, /var/run is a symlink.
 UPDATER_USER=updater
-# List of environment variables to preserve
-PRESERVE_VARS="CUSTOM_TAG CUSTOM_IMAGE DB_PASSWORD PROJECT_NAME TZ SCHEDULED_TIME"
 
 ##
 ##  INPUT CHECKS
 ##
 
-if [ ! -n "${CUSTOM_IMAGE}" ]; then
-    echo "Error: image is unset. ENV CUSTOM_IMAGE needs to be specified"
-    exit 1
-elif [ ! -n "${DB_PASSWORD}" ]; then
+if [ ! -n "${DB_PASSWORD}" ]; then
     echo "Error: DB password is unset. ENV DB_PASSWORD needs to be specified"
     exit 1
 elif [ ! -n "${PROJECT_NAME}" ]; then
@@ -65,4 +60,4 @@ fi
 echo "Switching to user ${UPDATER_USER}"
 
 # Preserve specific environment variables and switch to the specified user
-su -w "$PRESERVE_VARS" ${UPDATER_USER} -c "/bin/bash scheduler.sh"
+su -w "${PRESERVE_VARS}" "${UPDATER_USER}" -c "/bin/bash scheduler.sh"
