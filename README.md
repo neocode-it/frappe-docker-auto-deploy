@@ -31,3 +31,20 @@ Optional Parameter:
 `-e TZ` Change default timezone for the scheduler. Defaults to `UTC`
 `-e SCHEDULED_TIME` Scheduled time (for updates). Read more about the scheduler below. Defaults to instant run without scheduler beeing set.
 `-e HTTP_PUBLISH_PORT`  Change http Port of frappe. Defaults to `8080`
+
+## Scheduler config
+
+You can set `SCHEDULED_TIME` to any valid timestring accepted by bash `date` command. Possible options are: `03:00`, `next monday`. This rule will be applied after every scheduler run. If no timestring is set, this container will run instantly and exit
+
+## Default Frappe config
+
+The docker compose-file will be based on this frappe config:
+
+```
+// Please note: In order to enable SSL access, a reverse proxy will be required as it is disabled by default
+docker compose -f compose.yaml \
+  -f overrides/compose.mariadb.yaml \
+  -f overrides/compose.redis.yaml \
+  -f overrides/compose.noproxy.yaml \
+  config > ./docker-compose.yaml
+```
