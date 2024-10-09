@@ -48,3 +48,12 @@ docker compose -f compose.yaml \
   -f overrides/compose.noproxy.yaml \
   config > ./docker-compose.yaml
 ```
+
+## Performance & Downtime
+
+Expected downtime (during redeployment of the container): ~2min
+
+Expected build time (running without downtime): 20min
+
+Due to the fact that cached rebuild can't be used, the build time will take a bit longer at ~20 minutes.
+
