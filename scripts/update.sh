@@ -21,6 +21,8 @@ cd "./app/${APP_NAME}/"
 # Set default frappe env variables
 cp example.env .env
 export PULL_POLICY=never
+export CUSTOM_IMAGE="frappeupdater/${APP_NAME}"
+export CUSTOM_TAG="1.0.0"
 # Set apps ENV variable
 export APPS_JSON_BASE64=$(base64 -w 0 /home/updater/config/apps.json)
 

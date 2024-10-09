@@ -22,8 +22,6 @@ COPY --chown=$UID:$GID config ./config
 COPY --chown=$UID:$GID scripts/* ./
 
 # Set ENV
-ENV CUSTOM_TAG="1.0.0"
-ENV CUSTOM_IMAGE=""
 ENV DB_PASSWORD=""
 ENV PROJECT_NAME=""
 ENV TZ="UTC"
