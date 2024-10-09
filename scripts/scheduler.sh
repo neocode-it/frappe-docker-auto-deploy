@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -n "${SCHEDULER_TIME}" ]; then
+if [ ! -n "${SCHEDULED_TIME}" ]; then
     echo "No time schedule selected - proceeding with a instant run..."
     /bin/bash update.sh
     exit 0
@@ -10,14 +10,14 @@ fi
 while true
 do
     # Check if any error occurs during date test conversion
-    date -d "${SCHEDULER_TIME}" "+%Y-%m-%d" >/dev/null 2>&1
+    date -d "${SCHEDULED_TIME}" "+%Y-%m-%d" >/dev/null 2>&1
 	if [ ! $? -eq 0 ]; then
         echo "Error: Time-schedule is invalid"
         exit 1
     fi
 
     # Compare both dates in seconds
-    difference=$(($(date -d "${SCHEDULER_TIME}" +%s) - $(date +%s)))
+    difference=$(($(date -d "${SCHEDULED_TIME}" +%s) - $(date +%s)))
     # Check if timestamp is past 24h - if so, add 
     if [ $difference -lt 0 ]; then
         difference=$((difference + 86400))  # Add 24h -> schedule for tomorrow
