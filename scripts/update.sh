@@ -76,6 +76,6 @@ $bench --site all clear-cache
 $bench --site all clear-website-cache
 
 # Clear builder layer cache in order to prevent excessive storage use
-docker builder prune -f
+docker builder prune --filter "until=2h"
 
 exit 0
