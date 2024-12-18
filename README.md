@@ -22,7 +22,7 @@ docker run -d \
 -e DB_PASSWORD="admin" \
 -e PROJECT_NAME="frappe" \
 --name frappe-updater \
-neocodeit/frappe-docker-deploy:1.0.0
+neocodeit/frappe-docker-deploy:latest
 ```
 
 Optional Parameter:
