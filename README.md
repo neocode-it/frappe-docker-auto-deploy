@@ -27,10 +27,10 @@ neocodeit/frappe-docker-deploy:latest
 
 Optional Parameter:
 
-`-e APP_NAME` App name which will be used to create unique mount and network names. Defaults to `PROJECT_NAME`
-`-e TZ` Change default timezone for the scheduler. Defaults to `UTC`
-`-e SCHEDULED_TIME` Scheduled time (for updates). Read more about the scheduler below. Defaults to instant run without scheduler beeing set.
-`-e HTTP_PUBLISH_PORT`  Change http Port of frappe. Defaults to `8080`
+`-e APP_NAME`  App name which will be used to create unique mount and network names. Defaults to `PROJECT_NAME`<br>
+`-e TZ`  Change default timezone for the scheduler. Defaults to `UTC`<br>
+`-e SCHEDULED_TIME`  Scheduled time (for updates). Read more about the scheduler below. Defaults to instant run without scheduler beeing set.<br>
+`-e HTTP_PUBLISH_PORT`  Change http Port of frappe. Defaults to `8080`<br>
 
 ## Scheduler config
 
