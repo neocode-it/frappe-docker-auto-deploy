@@ -9,7 +9,7 @@ Basic Auto-update/ deployment Docker container for custom Frappe docker builds. 
 3. Generate docker compose file, which includes all required services except the proxy (Frontend will be available on port `HTTP_PUBLISH_PORT` or `8080`)
 4. Stop the current project (specified using ENV-variables)
 5. Launch/Recreate project based on the new image
-6. Run bench migrate
+6. Run bench migrate & clear cache
 
 ## How to use
 
