@@ -1,54 +1,52 @@
 #!/bin/sh
 # update.sh - Automatic Updater for ERPNext
 #
-# Generates the docker image and composer file and redeploys the docker Setup
+# Generates the Docker image and compose file, then redeploys the setup.
 #
-
-
-# Input checks are done within entrypoint.sh
-
+# NOTE: Input checks are handled in `entrypoint.sh`
+#
 
 ##
 ##  PREPARATION
 ##
 
-# Prepare
-cd /home/updater/
+# Navigate to updater home directory
+cd /home/updater/ || exit 1
 rm -rf ./app/
-git clone "https://github.com/frappe/frappe_docker" "./app/${APP_NAME}/"
-cd "./app/${APP_NAME}/"
+git clone $FRAPPE_DOCKER_REPO "./app/${APP_NAME}/"
+cd "./app/${APP_NAME}/" || exit 1
 
-# Set default frappe env variables
+# Set default Frappe environment variables
 cp example.env .env
-export PULL_POLICY=never
+export PULL_POLICY="never"
 export CUSTOM_IMAGE="frappeupdater/${APP_NAME}"
 export CUSTOM_TAG="1.0.0"
+
 # Set apps ENV variable
-export APPS_JSON_BASE64=$(base64 -w 0 /home/updater/config/apps.json)
+export APPS_JSON_BASE64
+APPS_JSON_BASE64=$(base64 /home/updater/config/apps.json | tr -d '\n')
 
+# Modify Dockerfile for efficient deployment
+echo "USER root" >> ./images/custom/Containerfile
 
-# Manipulate dockerfile for more efficient deployment
-echo USER root >> ./images/custom/Containerfile
-
-# Apply custom Dockerfile.extra content
+# Apply custom Dockerfile modifications
 cat /home/updater/config/Dockerfile.extra >> ./images/custom/Containerfile
 
-# Switch back to frappe
-echo " " >> ./images/custom/Containerfile   # Add newline in case there is none in Docker.extra
+# Switch back to frappe user
+echo "" >> ./images/custom/Containerfile  # Ensure newline
 echo "USER frappe" >> ./images/custom/Containerfile
 
 ##
 ##  BUILD PROCESS
 ##
 
-# Build docker image
-# Cache needs to be disabled, since docker doesn't know about possible app updates
+# Build the Docker image (disable cache for fresh updates)
 docker build \
-  --build-arg=APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
-  --tag="${CUSTOM_IMAGE}:${CUSTOM_TAG}" \
-  --file=images/custom/Containerfile --no-cache .
+  --build-arg APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
+  --tag "${CUSTOM_IMAGE}:${CUSTOM_TAG}" \
+  --file images/custom/Containerfile --no-cache .
 
-# Create Docker compose file
+# Generate Docker Compose configuration
 docker compose -f compose.yaml \
   -f overrides/compose.mariadb.yaml \
   -f overrides/compose.redis.yaml \
@@ -59,23 +57,30 @@ docker compose -f compose.yaml \
 ##  DEPLOYMENT
 ##
 
-# Shutdown and delete current project
+# Stop and remove existing containers
 docker compose -p "${PROJECT_NAME}" down
 
-# Clear anonymous volues (without prompt)
+# Clean up anonymous volumes (force without prompt)
 docker volume prune -f
 
-# Create new docker container
+# Deploy new container setup
 docker compose -p "${PROJECT_NAME}" -f docker-compose.yaml up -d --force-recreate
 
-# After update maintenance
-bench="docker compose -f docker-compose.yaml -p "${PROJECT_NAME}" exec backend bench "
+##
+##  POST-DEPLOYMENT MAINTENANCE
+##
 
-$bench --site all migrate
-$bench --site all clear-cache
-$bench --site all clear-website-cache
+# Define bench alias
+bench() {
+  docker compose -f docker-compose.yaml -p "${PROJECT_NAME}" exec backend bench "$@"
+}
 
-# Clear builder layer cache in order to prevent excessive storage use
+# Run Frappe maintenance tasks
+bench --site all migrate
+bench --site all clear-cache
+bench --site all clear-website-cache
+
+# Clear Docker build cache to prevent excessive storage usage
 docker builder prune -f
 
 exit 0
