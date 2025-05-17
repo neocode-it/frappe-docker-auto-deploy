@@ -2,7 +2,7 @@
 from alpine:3.21
 
 # Install Docker & Git
-RUN apk add --no-cache coreutils tzdata docker-cli docker-compose bash git 
+RUN apk add --no-cache coreutils tzdata docker-cli docker-compose git 
 
 # Create a non-root user
 ARG USER=updater UID=1000 GID=1000
