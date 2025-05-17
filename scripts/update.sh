@@ -13,7 +13,7 @@
 # Navigate to updater home directory
 cd /home/updater/ || exit 1
 rm -rf ./app/
-git clone $FRAPPE_DOCKER_REPO "./app/${APP_NAME}/"
+git clone "${FRAPPE_DOCKER_REPO}" "./app/${APP_NAME}/"
 cd "./app/${APP_NAME}/" || exit 1
 
 # Set default Frappe environment variables

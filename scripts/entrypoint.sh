@@ -67,7 +67,7 @@ echo "Switching to user ${UPDATER_USER}"
 # Preserve variables dynamically
 ENV_EXPORTS=""
 for VAR in $PRESERVE_VARS; do
-    eval "VALUE=\$$VAR"
+    VALUE=$(printenv "$VAR")
     ENV_EXPORTS="$ENV_EXPORTS $VAR='$VALUE'"
 done
 
