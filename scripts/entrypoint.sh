@@ -7,6 +7,7 @@
 # Check if docker.sock is mounted
 DOCKER_SOCKET=/run/docker.sock  # Actual location of docker.sock, /var/run is a symlink.
 UPDATER_USER=updater
+PRESERVE_VARS="DB_PASSWORD PROJECT_NAME TZ SCHEDULED_TIME APP_NAME HTTP_PUBLISH_PORT FRAPPE_DOCKER_REPO"
 
 ##
 ## INPUT CHECKS

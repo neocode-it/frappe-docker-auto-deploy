@@ -29,7 +29,7 @@ ENV FRAPPE_DOCKER_REPO="https://github.com/frappe/frappe_docker"
 
 # IMPORTANT: Specify all variables which will should be preserved 
 # after switching to user updater (done within entrypoint.sh)
-ENV PRESERVE_VARS="DB_PASSWORD PROJECT_NAME TZ SCHEDULED_TIME APP_NAME HTTP_PUBLISH_PORT FRAPPE_DOCKER_REPO"
+# in the entrypoint.sh script!
 
 # Entry point
 ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
