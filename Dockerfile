@@ -1,19 +1,14 @@
 # Use an official base image
-FROM ubuntu:20.04
+from alpine:3.21
 
-# Install Docker 
-RUN apt-get update && apt-get install -y \
-    curl git && \
-    curl -fsSL https://get.docker.com -o get-docker.sh && \
-    sh ./get-docker.sh
+# Install Docker & Git
+RUN apk add --no-cache coreutils tzdata docker-cli docker-compose git 
 
 # Create a non-root user
-ARG USER=updater
-ARG UID=1000
-ARG GID=1000
+ARG USER=updater UID=1000 GID=1000
 
-RUN groupadd -g $GID $USER && \
-    useradd -m -u $UID -g $GID -s /bin/bash $USER
+RUN addgroup -g $GID $USER && \
+    adduser -D -u $UID -G $USER $USER
 
 WORKDIR /home/$USER
 
@@ -29,9 +24,12 @@ ENV SCHEDULED_TIME=""
 ENV APP_NAME=""
 ENV HTTP_PUBLISH_PORT="8080"
 
+# Experimantal, not documented yet
+ENV FRAPPE_DOCKER_REPO="https://github.com/frappe/frappe_docker"
+
 # IMPORTANT: Specify all variables which will should be preserved 
 # after switching to user updater (done within entrypoint.sh)
-ENV PRESERVE_VARS="DB_PASSWORD PROJECT_NAME TZ SCHEDULED_TIME APP_NAME HTTP_PUBLISH_PORT"
+# in the entrypoint.sh script!
 
 # Entry point
-ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
