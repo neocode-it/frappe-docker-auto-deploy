@@ -55,6 +55,10 @@ if ! docker build \
   ${FRAPPE_BRANCH_ARGS} \
   --tag "${CUSTOM_IMAGE}:${CUSTOM_TAG}" \
   --file images/custom/Containerfile --no-cache .
+then
+    echo "ERROR: Docker build failed. Aborting to keep the existing deployment running."
+    exit 1
+fi
 
 # Generate Docker Compose configuration
 docker compose -f compose.yaml \
