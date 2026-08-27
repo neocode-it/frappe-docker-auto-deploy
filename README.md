@@ -11,6 +11,10 @@ Basic Auto-update/ deployment Docker container for custom Frappe docker builds. 
 5. Launch/Recreate project based on the new image
 6. Run bench migrate & clear cache
 
+## Requirements
+
+- Docker Engine v23 or newer on the host. The image build passes `apps.json` as a BuildKit secret, which requires BuildKit on the host's Docker daemon (default since Engine v23)
+
 ## How to use
 
 Spin up docker container
