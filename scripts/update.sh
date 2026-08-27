@@ -40,9 +40,16 @@ echo "USER frappe" >> ./images/custom/Containerfile
 ##  BUILD PROCESS
 ##
 
+# Override the frappe branch only when FRAPPE_BRANCH is set, otherwise the upstream Containerfile default is used
+FRAPPE_BRANCH_ARGS=""
+if [ -n "${FRAPPE_BRANCH}" ]; then
+    FRAPPE_BRANCH_ARGS="--build-arg FRAPPE_BRANCH=${FRAPPE_BRANCH}"
+fi
+
 # Build the Docker image (disable cache for fresh updates)
 docker build \
   --build-arg APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
+  ${FRAPPE_BRANCH_ARGS} \
   --tag "${CUSTOM_IMAGE}:${CUSTOM_TAG}" \
   --file images/custom/Containerfile --no-cache .
 

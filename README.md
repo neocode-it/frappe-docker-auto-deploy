@@ -31,6 +31,7 @@ Optional Parameter:
 `-e TZ`  Change default timezone for the scheduler. Defaults to `UTC`<br>
 `-e SCHEDULED_TIME`  Scheduled time (for updates). Read more about the scheduler below. Defaults to instant run without scheduler beeing set.<br>
 `-e HTTP_PUBLISH_PORT`  Change http Port of frappe. Defaults to `8080`<br>
+`-e FRAPPE_BRANCH`  Frappe branch which will be used for the `bench init`. Defaults to the upstream default branch of frappe_docker<br>
 
 ## Scheduler config
 

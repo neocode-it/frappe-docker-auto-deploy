@@ -23,6 +23,7 @@ ENV TZ="UTC"
 ENV SCHEDULED_TIME=""
 ENV APP_NAME=""
 ENV HTTP_PUBLISH_PORT="8080"
+ENV FRAPPE_BRANCH=""
 
 # Experimantal, not documented yet
 ENV FRAPPE_DOCKER_REPO="https://github.com/frappe/frappe_docker"
