@@ -22,9 +22,8 @@ export PULL_POLICY="never"
 export CUSTOM_IMAGE="frappeupdater/${APP_NAME}"
 export CUSTOM_TAG="1.0.0"
 
-# Set apps ENV variable
-export APPS_JSON_BASE64
-APPS_JSON_BASE64=$(base64 /home/updater/config/apps.json | tr -d '\n')
+# Copy apps.json into the build context (passed to the build as a BuildKit secret)
+cp /home/updater/config/apps.json ./apps.json
 
 # Modify Dockerfile for efficient deployment
 echo "USER root" >> ./images/custom/Containerfile
@@ -46,9 +45,13 @@ if [ -n "${FRAPPE_BRANCH}" ]; then
     FRAPPE_BRANCH_ARGS="--build-arg FRAPPE_BRANCH=${FRAPPE_BRANCH}"
 fi
 
+# Force BuildKit (required for --secret; default only on Docker Engine v23+)
+export DOCKER_BUILDKIT=1
+
 # Build the Docker image (disable cache for fresh updates)
-docker build \
-  --build-arg APPS_JSON_BASE64="${APPS_JSON_BASE64}" \
+# apps.json is provided as a BuildKit secret
+if ! docker build \
+  --secret id=apps_json,src=apps.json \
   ${FRAPPE_BRANCH_ARGS} \
   --tag "${CUSTOM_IMAGE}:${CUSTOM_TAG}" \
   --file images/custom/Containerfile --no-cache .
